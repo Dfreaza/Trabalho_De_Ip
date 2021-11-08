@@ -10,14 +10,14 @@ public class Sokaban{
       boolean eValido = isValid(456);
       System.out.println("E valido " + eValido);
 
-      //int sequenciaDaDireita = rightSubsequence(43521141,5);
-      //System.out.println("sequenciaDaDireita " + sequenciaDaDireita);
+      int sequenciaDaDireita = rightSubsequence(4114152,2);
+      System.out.println("sequenciaDaDireita " + sequenciaDaDireita);
 
       boolean podeMoverParaDireita = ableToMoveRight(43521141);
       System.out.println("podeMoverParaDireita " + podeMoverParaDireita);
 
 
-      isValidForGrid(43221141,8);
+      isValidForGrid(43221145,8);
     }
 
 
@@ -72,13 +72,24 @@ public class Sokaban{
 
     static int rightSubsequence(int num, int d){
       int numero = num % 10;
+      int num2 = num;
       int numDigitosDepoisDed = 0;
+      int sequenciaDaDireita;
+
       while (numero != d){
-        numDigitosDepoisDed++;
-        numero /=10;
+        if (num2 % 10 != d){
+          numDigitosDepoisDed++;
+        }
+        num2 /= 10;
+        numero = (num2)%10;
       }
-      int power = potencia(10,numDigitosDepoisDed);
-      int sequenciaDaDireita = num % power;
+      if (numDigitosDepoisDed == 0){
+        sequenciaDaDireita = 0;
+      }
+      else{
+        int power = potencia(10,numDigitosDepoisDed);
+        sequenciaDaDireita = num % power;
+      }
 
       return sequenciaDaDireita;
     }
@@ -89,7 +100,7 @@ public class Sokaban{
     static boolean ableToMoveRight(int num){
       boolean podeMoverParaDireita = false;
 
-      int sequenciaDaDireita = 3141;        // O correto é rightSubsequence(num) alterar quando for para entregar!!!
+      int sequenciaDaDireita = rightSubsequence(num , 5);        // O correto é rightSubsequence(num) alterar quando for para entregar!!!
 
       int numDigitos = digits(sequenciaDaDireita);
 
@@ -101,7 +112,6 @@ public class Sokaban{
 
       int segundoNumADireita = primeirosDoisNumADireita % 10;
 
-      System.out.println(primeironumADireita);
 
       if (primeironumADireita % 2 != 0 || (sequenciaDaDireita > 10 &&
          ((primeironumADireita)*(segundoNumADireita))%4 != 0)){
@@ -117,7 +127,7 @@ public class Sokaban{
       int digitos = digits(num);
       int ocorre5 = occurrencesOf(num,5);
       boolean existe5EmNum;
-      if (ocorre5 == 1){
+      if (ocorre5 == 1 && ableToMoveRight(num)){
         existe5EmNum = true;
       }
       else
