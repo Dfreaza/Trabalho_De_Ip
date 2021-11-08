@@ -2,9 +2,21 @@ public class Sokaban{
 
     public static void main(String[] args) {
       int digitos = digits(456);
-      System.out.println(digitos);
+      System.out.println("Digitos " + digitos);
 
-      //ableToMoveRight(0);
+      int ocorrencia = occurrencesOf(456,2);
+      System.out.println("ocorrencia " + ocorrencia);
+
+      boolean eValido = isValid(456);
+      System.out.println("E valido " + eValido);
+
+      //int sequenciaDaDireita = rightSubsequence(43521141,5);
+      //System.out.println("sequenciaDaDireita " + sequenciaDaDireita);
+
+      boolean podeMoverParaDireita = ableToMoveRight(43521141);
+      System.out.println("podeMoverParaDireita " + podeMoverParaDireita);
+
+
       isValidForGrid(43221141,8);
     }
 
@@ -50,12 +62,6 @@ public class Sokaban{
       return resultado;
     }
 
-
-    static int rightSubsequence(int num, int d){
-
-    }
-
-
     static int potencia(int k, int expoente){
       for (int i = 1;i < expoente ; i++) {
         k  *= 10;
@@ -64,21 +70,41 @@ public class Sokaban{
     }
 
 
+    static int rightSubsequence(int num, int d){
+      int numero = num % 10;
+      int numDigitosDepoisDed = 0;
+      while (numero != d){
+        numDigitosDepoisDed++;
+        numero /=10;
+      }
+      int power = potencia(10,numDigitosDepoisDed);
+      int sequenciaDaDireita = num % power;
+
+      return sequenciaDaDireita;
+    }
+
+
+
+
     static boolean ableToMoveRight(int num){
       boolean podeMoverParaDireita = false;
 
-      int sequenciaDaDireita = 5141;        // O correto é rightSubsequence(num) alterar quando for para entregar!!!
+      int sequenciaDaDireita = 3141;        // O correto é rightSubsequence(num) alterar quando for para entregar!!!
 
       int numDigitos = digits(sequenciaDaDireita);
 
-      int power = potencia(10,numDigitos-1);     //faz a potencia de 10 elevado ao num de digitos - 1 (-1 porque a gente quer o primeiro digito seja != 0)
+      int power = potencia(10,numDigitos-2);     //faz a potencia de 10 elevado ao num de digitos - 2 (-2 porque a gente quer os dois primeiros digitos)
 
-      int primeironumADireita = sequenciaDaDireita/power;     //encontra o primeiro num depois do 5
+      int primeirosDoisNumADireita = sequenciaDaDireita/power;   //encontra os dois primeiros numeros depois do 5
+
+      int primeironumADireita = primeirosDoisNumADireita/10;
+
+      int segundoNumADireita = primeirosDoisNumADireita % 10;
 
       System.out.println(primeironumADireita);
 
-      if (primeironumADireita % 2 != 0 || (sequenciaDaDireita > 10 &&     // acho que a condiçao do if esta mal!!!
-         ((sequenciaDaDireita)*(sequenciaDaDireita%10))%4 != 0)){
+      if (primeironumADireita % 2 != 0 || (sequenciaDaDireita > 10 &&
+         ((primeironumADireita)*(segundoNumADireita))%4 != 0)){
               podeMoverParaDireita = true;
       }
       return podeMoverParaDireita;
@@ -87,7 +113,7 @@ public class Sokaban{
 
 
     static void isValidForGrid(int num, int numDigits){
-      boolean valido = true; //isValid(num);
+      boolean valido = isValid(num);
       int digitos = digits(num);
       int ocorre5 = occurrencesOf(num,5);
       boolean existe5EmNum;
