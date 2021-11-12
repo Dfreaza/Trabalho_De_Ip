@@ -1,27 +1,33 @@
 /**
 *author fc-58640
-*author fc-58969
+*author fc-56969
 *
 */
 
-public class ProjetoIP{
+public class Sokoban{
   public static void main(String[] args){
-
-    int num = 43221141;
     int d = 8;
-
-    verificarGame(num,d);
+    verificarGame(43521141,d);
+    verificarGame(435211412,d);
+    verificarGame(4352114,d);
+    verificarGame(43527141,d);
+    verificarGame(43525141,d);
+    verificarGame(43221141,d);
+    verificarGame(43121145,d);
+    verificarGame(43121541,d);
+    verificarGame(43121522,d);
+    verificarGame(43121152,d);
 
   }
 
-/**
-*Calcular a quantidade de digitos existente em num
-*@param num (numero)
-*@requires {@code num > 0}
-*@ensures {@code /result >= 1}
-*@return a quantidadeNumero com a soma de quantas vezes num foi divido por 10
-*/
-
+  /**
+  *Calcula a quantidade de digitos existentes em num
+  *
+  *@param num (numero)
+  *@requires {@code num > 0}
+  *@ensures {@code /result >= 1}
+  *@return retorna quantidadeNumero com a soma de quantas vezes num foi divido por 10
+  */
     static int digits(int num){
       int quantidadeNumero = 0;
 
@@ -32,15 +38,15 @@ public class ProjetoIP{
     return quantidadeNumero;
   }
 
-/**
-*Calcular a quantidade de vezes que um número d aparece numa sequencia numa
-*@param num (uma sequencia de numeros)
-*@param d (um numero apenas)
-*@requires {@code num > 0 && 9 >= d > 0}
-*ensures {@code /result >= 0}
-*@return a quantidade de vezes que ocorre a incidencia do número na sequencia
-*/
-
+  /**
+  *Calcula a quantidade de vezes que um numero d aparece numa sequencia num
+  *
+  *@param num e uma sequencia de numeros
+  *@param d e um numero
+  *@requires {@code num > 0 && 9 >= d > 0}
+  *ensures {@code /result >= 0}
+  *@return retorna a quantidade de vezes que ocorre a incidencia do número na sequencia
+  */
     static int occurrencesOf(int num, int d){
       int incidencia = 0;
 
@@ -53,15 +59,13 @@ public class ProjetoIP{
     return incidencia;
   }
 
-/**
-*Verificar se num é positivo e possui apenas digitos entre 1 a 5,
-*e retonar true caso se verifique e false caso contrário
-*@param num (sequencia de numeros)
-*@requires {@code }                                                     // falta esta linha
-*@ensures {@code /result == true || /result == false}
-*@return ao resultado com o valor correto da variavel booleana
-*/
-
+  /**
+  *Verifica se num é positivo e possui apenas digitos entre 1 a 5
+  *
+  *@param num (sequencia de numeros)
+  *@ensures {@code /result == true || /result == false}
+  *@return retorna o resultado com o valor correto da variavel booleana
+  */
     static boolean isValid(int num){
       boolean resultado = false;
 
@@ -79,15 +83,15 @@ public class ProjetoIP{
     return resultado;
   }
 
-/**
-*Calcular o valor de 10 elevado a k
-*@param k valor
-*@param expoente o expoente                               rever estas linhas !!!!!!!
-*@requires {@code k == 10}
-*@ensures {@code expoente >= 1}
-*@return k a ser multiplicado por 10
-*/
-
+  /**
+  *Calcula o valor de 10 elevado a k
+  *
+  *@param k valor
+  *@param expoente o expoente
+  *@requires {@code k == 10}
+  *@ensures {@code expoente >= 1}
+  *@return k a ser multiplicado por 10
+  */
     static int potencia(int k, int expoente){
       for (int i = 1; i < expoente; i++){
         k*=10;
@@ -95,15 +99,15 @@ public class ProjetoIP{
     return k;
   }
 
-/**
-*Devolve o número inteiro que representa a sequência à direita de default:
-*@param num (sequência de números)
-*@param d (um número de um digito)
-*@requires {@code 9 >= d > 0 && }                                         rever a linha falta coisas
-*@ensures {@code /result >= 0}
-*@return retorna à sequenciaDireita a sequência de números à direita de d.
-*/
-
+  /**
+  *Devolve o numero inteiro que representa a sequência a direita de d
+  *
+  *@param num e uma sequencia de numeros dada
+  *@param d é um numero com um digito
+  *@requires {@code 9 >= d > 0 && occurrencesOf(num,d)==1 && isValid(num)}
+  *@ensures {@code /result >= 0}
+  *@return retorna na variavel sequenciaDireita a sequencia de numeros a direita de d.
+  */
     static int rightSubsequence(int num, int d){
       int numero = num%10;
       int num2 = num;
@@ -128,14 +132,14 @@ public class ProjetoIP{
   }
 
 
-/**
-*Verifica se o jogador esta nas condiçoes de se mover para a direita
-*@param num (sequencia de numeros)
-*@requires {@code }                                                     // falta esta linha
-*@ensures {@code /result == true || /result == false}
-*@return retorna o resultado com o valor correto da variavel booleana
-*/
-
+  /**
+  *Verifica se o jogador esta nas condiçoes de se mover para a direita
+  *
+  *@param num e uma sequencia de numeros dada
+  *@requires {@code isValid(num) && occurrencesOf(num,5)==1}
+  *@ensures {@code /result == true || /result == false}
+  *@return retorna o resultado com o valor correto da variavel booleana
+  */
   static boolean ableToMoveRight(int num){
     boolean moverDireita = false;
 
@@ -153,15 +157,15 @@ public class ProjetoIP{
   }
 
 
-/**
-*
-*@param num (sequencia de numeros)
-*@param numDigits numero de digitos de num
-*@requires {@code num > 0 && 9 >= numDigits > 0}                                               // falta esta linha
-*@ensures {@code /result == true || /result == false}
-*@return retorna o resultado com o valor correto da variavel booleana
-*/
-
+  /**
+  *
+  *@param num e uma sequencia de numeros dada
+  *
+  *@param numDigits numero de digitos de num
+  *@requires {@code num > 0 && 9 >= numDigits > 0 && isValid(num)}
+  *@ensures {@code /result == true || /result == false}
+  *@return retorna o resultado com o valor correto da variavel booleana
+  */
   static boolean isValidForGrid(int num, int numDigits){
     boolean numValido = false;
 
@@ -172,15 +176,14 @@ public class ProjetoIP{
   }
 
 
-/**
-*Verifica as condiçoes e faz print com a mensagem
-*@param num (sequencia de numeros)
-*@param numDigits numero de digitos de num
-*@requires {@code num > 0 && 9 >= numDigits > 0}                                            // falta esta linha
-*@ensures faz print com uma mensagem
-*@return none
-*/
-
+  /**
+  *Verifica as condiçoes e faz print com a mensagem
+  *
+  *@param num e uma sequencia de numeros dada
+  *@param numDigits numero de digitos de num
+  *@ensures faz print com uma mensagem
+  *@return none
+  */
   static void verificarGame(int num, int numDigits){
     int ocorre5 = occurrencesOf(num,5);
 
