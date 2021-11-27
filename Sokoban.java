@@ -3,6 +3,7 @@
 *author fc-56969
 *
 */
+import java.util.Scanner;
 
 public class Sokoban{
   public static void main(String[] args){
@@ -18,6 +19,15 @@ public class Sokoban{
     verificarGame(43121522,d);
     verificarGame(43121152,d);
 
+    int[][] matriz = new int[3][3];
+    int[] lista = null;
+    boolean resultado = positionInGrid(matriz, lista);
+    System.out.println(resultado);
+
+    Scanner sc = new Scanner(System.in);
+    char r = readOption(sc);
+    System.out.println(r);
+
   }
 
   /**
@@ -28,7 +38,7 @@ public class Sokoban{
   *@ensures {@code /result >= 1}
   *@return retorna quantidadeNumero com a soma de quantas vezes num foi divido por 10
   */
-    static int digits(int num){
+    public static int digits(int num){
       int quantidadeNumero = 0;
 
       while(num > 0){
@@ -47,7 +57,7 @@ public class Sokoban{
   *ensures {@code /result >= 0}
   *@return retorna a quantidade de vezes que ocorre a incidencia do número na sequencia
   */
-    static int occurrencesOf(int num, int d){
+    public static int occurrencesOf(int num, int d){
       int incidencia = 0;
 
       while(num > 1){
@@ -66,7 +76,7 @@ public class Sokoban{
   *@ensures {@code /result == true || /result == false}
   *@return retorna o resultado com o valor correto da variavel booleana
   */
-    static boolean isValid(int num){
+    public static boolean isValid(int num){
       boolean resultado = false;
 
       int ocorre5 = occurrencesOf(num,5);
@@ -92,7 +102,7 @@ public class Sokoban{
   *@ensures {@code expoente >= 1}
   *@return k a ser multiplicado por 10
   */
-    static int potencia(int k, int expoente){
+    public static int potencia(int k, int expoente){
       for (int i = 1; i < expoente; i++){
         k*=10;
       }
@@ -108,7 +118,7 @@ public class Sokoban{
   *@ensures {@code /result >= 0}
   *@return retorna na variavel sequenciaDireita a sequencia de numeros a direita de d.
   */
-    static int rightSubsequence(int num, int d){
+    public static int rightSubsequence(int num, int d){
       int numero = num%10;
       int num2 = num;
       int digitosDireitaD = 0;
@@ -140,7 +150,7 @@ public class Sokoban{
   *@ensures {@code /result == true || /result == false}
   *@return retorna o resultado com o valor correto da variavel booleana
   */
-  static boolean ableToMoveRight(int num){
+  public static boolean ableToMoveRight(int num){
     boolean moverDireita = false;
 
     int sequenciaDireita = rightSubsequence(num,5);
@@ -166,7 +176,7 @@ public class Sokoban{
   *@ensures {@code /result == true || /result == false}
   *@return retorna o resultado com o valor correto da variavel booleana
   */
-  static boolean isValidForGrid(int num, int numDigits){
+  public static boolean isValidForGrid(int num, int numDigits){
     boolean numValido = false;
 
     if (isValid(num) && numDigits == digits(num)){
@@ -184,7 +194,7 @@ public class Sokoban{
   *@ensures faz print com uma mensagem
   *@return none
   */
-  static void verificarGame(int num, int numDigits){
+  public static void verificarGame(int num, int numDigits){
     int ocorre5 = occurrencesOf(num,5);
 
       if (isValidForGrid(num,numDigits) && ableToMoveRight(num) && ocorre5==1){
@@ -199,4 +209,132 @@ public class Sokoban{
       else
         System.out.println("Inválido");
       }
+
+      //
+      //
+      //
+      //
+      // 
+      // Parte 2 do projeto !!!!!!!!!!!
+      //
+      //
+      //
+      //
+      //
+      //
+
+  public static boolean isValidGrid(int[][] grid){
+    boolean resultado = true; 
+    if (grid == null){
+      resultado = false;
+    }
+    return resultado;
+  }
+
+  public static boolean positionInGrid(int[][] grid, int[] position){
+    boolean resultado = false;
+    boolean existePosition = position != null;
+    if (existePosition){
+      boolean tamanho = position.length == 2;
+      boolean tamanhoZero = 0 <= position[0] || position[0]< grid.length;
+      boolean tamanhoUm = 0 <= position[1] || position[1] < grid[1].length;
+      if (tamanho && tamanhoZero && tamanhoUm){
+        resultado = true;
+      }
+    }
+    return resultado;
+  }
+
+  public static boolean goalsInGrid(int[][] grid, int[][] goals){
+    boolean resultado = true;
+    int numDeDois = 0;
+    if (isValidGrid(goals)){
+      for (int i = 0;i < goals.length; i++){
+        if (!positionInGrid(grid, goals[i])){
+          resultado = false;
+        }
+      }
+      if (resultado){
+        for(int i = 0; i < goals.length; i++){
+          for(int j = 0; j < goals[i].length; j++){
+            if (goals[i][j] == 2){
+              numDeDois++;
+            }
+            else if(goals[i][j] != 3){
+              resultado = false;
+            }
+          }
+        }
+      if (goals.length != numDeDois){
+          resultado = false;
+        }
+      } 
+    }
+    else{
+      resultado = false;
+    }
+    
+    return resultado;
+  }
+
+  public static boolean isValidDirection(char direction){
+    boolean resultado = false;
+    if (direction == 'R' || direction == 'L' || direction == 'U' || direction == 'D'){
+      resultado = true;
+    }
+    return resultado;
+  }
+
+  public static char readOption(Scanner scan){
+
+    System.out.println("Welcome to Sokoban!");
+    System.out.println("Consider that Sokoban symbols are represented by the following digits:");
+    System.out.println(" "+"1 - blank  "+"2 - box  "+"3 - goal  "+"4 - wall  "+"5 - player  ");
+    System.out.println("The symbolic representation on the right may help you while playing.");
+
+    char readOption;
+    boolean valido = false;
+    do {
+        readOption = scan.next().charAt(0);
+        valido = isValidDirection(readOption);
+        if(!valido && readOption != 'E'){
+          System.out.println("not valid");
+        }
+      }while (!valido && readOption != 'E');
+      
+      return readOption;  
+    }
+
+  public static int[] delta(char direction){
+    int[] lista = new int[2];
+    if (direction == 'R'){
+      lista[0] = 0;
+      lista[1] = 1;
+    }
+    else if (direction == 'L'){
+      lista[0] = 0;
+      lista[1] = -1;
+    }
+    else if (direction == 'U'){
+      lista[0] = -1;
+      lista[1] = 0;
+    }
+    else if (direction == 'D'){
+      lista[0] = 1;
+      lista[1] = 0;
+    }
+    return lista;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
 }
