@@ -282,6 +282,7 @@ public class Sokoban{
     if (direction == 'R' || direction == 'L' || direction == 'U' || direction == 'D'){
       resultado = true;
     }
+    
     return resultado;
   }
 
