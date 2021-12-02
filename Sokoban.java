@@ -1,234 +1,71 @@
-/**
-*author fc-58640
-*author fc-56969
-*
-*/
 import java.util.Scanner;
 
-public class Sokoban{
-  public static void main(String[] args){
-    int d = 8;
-    verificarGame(43521141,d);
-    verificarGame(435211412,d);
-    verificarGame(4352114,d);
-    verificarGame(43527141,d);
-    verificarGame(43525141,d);
-    verificarGame(43221141,d);
-    verificarGame(43121145,d);
-    verificarGame(43121541,d);
-    verificarGame(43121522,d);
-    verificarGame(43121152,d);
-
-    int[][] matriz = new int[3][3];
-    int[] lista = null;
-    boolean resultado = positionInGrid(matriz, lista);
-    System.out.println(resultado);
-
-    Scanner sc = new Scanner(System.in);
-    char r = readOption(sc);
-    System.out.println(r);
-
-  }
-
-  /**
-  *Calcula a quantidade de digitos existentes em num
-  *
-  *@param num (numero)
-  *@requires {@code num > 0}
-  *@ensures {@code /result >= 1}
-  *@return retorna quantidadeNumero com a soma de quantas vezes num foi divido por 10
-  */
-    public static int digits(int num){
-      int quantidadeNumero = 0;
-
-      while(num > 0){
-        num/=10;
-        quantidadeNumero++;
-      }
-    return quantidadeNumero;
-  }
-
-  /**
-  *Calcula a quantidade de vezes que um numero d aparece numa sequencia num
-  *
-  *@param num e uma sequencia de numeros
-  *@param d e um numero
-  *@requires {@code num > 0 && 9 >= d > 0}
-  *ensures {@code /result >= 0}
-  *@return retorna a quantidade de vezes que ocorre a incidencia do número na sequencia
-  */
-    public static int occurrencesOf(int num, int d){
-      int incidencia = 0;
-
-      while(num > 1){
-        if(num%10 == d){
-          incidencia++;
-        }
-        num/=10;
-      }
-    return incidencia;
-  }
-
-  /**
-  *Verifica se num é positivo e possui apenas digitos entre 1 a 5
-  *
-  *@param num (sequencia de numeros)
-  *@ensures {@code /result == true || /result == false}
-  *@return retorna o resultado com o valor correto da variavel booleana
-  */
-    public static boolean isValid(int num){
-      boolean resultado = false;
-
-      int ocorre5 = occurrencesOf(num,5);
-      int ocorre6 = occurrencesOf(num,6);
-      int ocorre7 = occurrencesOf(num,7);
-      int ocorre8 = occurrencesOf(num,8);
-      int ocorre9 = occurrencesOf(num,9);
-
-      if (num > 0 && ocorre5 <= 1 && ocorre6 == 0 && ocorre7 == 0 && ocorre8 == 0 && ocorre9 == 0){
-        resultado = true;
-      }else{
-        resultado = false;
-      }
-    return resultado;
-  }
-
-  /**
-  *Calcula o valor de 10 elevado a k
-  *
-  *@param k valor
-  *@param expoente o expoente
-  *@requires {@code k == 10}
-  *@ensures {@code expoente >= 1}
-  *@return k a ser multiplicado por 10
-  */
-    public static int potencia(int k, int expoente){
-      for (int i = 1; i < expoente; i++){
-        k*=10;
-      }
-    return k;
-  }
-
-  /**
-  *Devolve o numero inteiro que representa a sequência a direita de d
-  *
-  *@param num e uma sequencia de numeros dada
-  *@param d é um numero com um digito
-  *@requires {@code 9 >= d > 0 && occurrencesOf(num,d)==1 && isValid(num)}
-  *@ensures {@code /result >= 0}
-  *@return retorna na variavel sequenciaDireita a sequencia de numeros a direita de d.
-  */
-    public static int rightSubsequence(int num, int d){
-      int numero = num%10;
-      int num2 = num;
-      int digitosDireitaD = 0;
-      int sequenciaDireita;
-
-      while (numero != d && numero>0){
-        if (num2 % 10 != d){
-          digitosDireitaD++;
-        }
-      num2/=10;
-      numero = (num2)%10;
+public class Sokoban {
+    public static void main(String[] args) {
+        int[][] matriz = new int[3][3];
+        int[] lista = null;
+        boolean resultado = positionInGrid(matriz, lista);
+        System.out.println(resultado);
+    
+        Scanner sc = new Scanner(System.in);
+        char r = readOption(sc);
+        System.out.println(r);
+        
     }
-        if (digitosDireitaD == 0){
-          sequenciaDireita = 0;
-        }
-        else{
-      int power = potencia(10,digitosDireitaD);
-      sequenciaDireita = num % power;
-    }
-    return sequenciaDireita;
-  }
 
 
-  /**
-  *Verifica se o jogador esta nas condiçoes de se mover para a direita
+  /*
+  *Verifica se a matriz não é nula, quadrada e que tem a ocorrência do número 5 (exatamente uma ocorrẽncia),
+  *ocorrência do número 2 (pelo menos uma vez), e a ocorrência do número 3 (não podendo utrapassar a ocorrência do numeor 2).
   *
-  *@param num e uma sequencia de numeros dada
-  *@requires {@code isValid(num) && occurrencesOf(num,5)==1}
-  *@ensures {@code /result == true || /result == false}
-  *@return retorna o resultado com o valor correto da variavel booleana
+  *@param Uma matriz (int[][] grid)
+  *@ensures
+  *@return Retorna um boleano depois de verificar a condição da matriz
   */
-  public static boolean ableToMoveRight(int num){
-    boolean moverDireita = false;
-
-    int sequenciaDireita = rightSubsequence(num,5);
-    int quantidadeNumero = digits(sequenciaDireita);
-    int power = potencia(10, quantidadeNumero-2);
-    int primeirosDoisNumADireita = sequenciaDireita/power;
-    int primeiroDireita = primeirosDoisNumADireita/10;
-    int segundoDireita = primeirosDoisNumADireita % 10;
-
-    if ( primeiroDireita % 2 != 0 || (sequenciaDireita > 10 && (primeiroDireita*segundoDireita)%4 != 0)){
-      moverDireita = true;
-    }
-    return moverDireita;
-  }
-
-
-  /**
-  *
-  *@param num e uma sequencia de numeros dada
-  *
-  *@param numDigits numero de digitos de num
-  *@requires {@code num > 0 && 9 >= numDigits > 0 && isValid(num)}
-  *@ensures {@code /result == true || /result == false}
-  *@return retorna o resultado com o valor correto da variavel booleana
-  */
-  public static boolean isValidForGrid(int num, int numDigits){
-    boolean numValido = false;
-
-    if (isValid(num) && numDigits == digits(num)){
-      numValido = true;
-    }
-    return numValido;
-  }
-
-
-  /**
-  *Verifica as condiçoes e faz print com a mensagem
-  *
-  *@param num e uma sequencia de numeros dada
-  *@param numDigits numero de digitos de num
-  *@ensures faz print com uma mensagem
-  *@return none
-  */
-  public static void verificarGame(int num, int numDigits){
-    int ocorre5 = occurrencesOf(num,5);
-
-      if (isValidForGrid(num,numDigits) && ableToMoveRight(num) && ocorre5==1){
-        System.out.println("Válido, 5 ocorre, é movível para a direita");
-      }
-      else if (isValidForGrid(num,numDigits) && digits(num) == numDigits && ocorre5==1){
-        System.out.println("Válido, 5 ocorre, não é movível para a direita");
-      }
-      else if (isValidForGrid(num,numDigits) && ocorre5==0){
-        System.out.println("Válido, 5 não ocorre");
-      }
-      else
-        System.out.println("Inválido");
-      }
-
-      //
-      //
-      //
-      //
-      // 
-      // Parte 2 do projeto !!!!!!!!!!!
-      //
-      //
-      //
-      //
-      //
-      //
 
   public static boolean isValidGrid(int[][] grid){
-    boolean resultado = true; 
-    if (grid == null){
-      resultado = false;
+    boolean resultado = true;
+    int ocorre2 = 0;
+    int ocorre3 = 0;
+    int ocorre5 = 0;
+    int ocorre6 = 0;
+    int ocorre7 = 0;
+    int ocorre8 = 0;
+    int ocorre9 = 0;
+
+    for (int i = 0; i < grid.length; i++){
+      for(int j = 0; j < grid.length; i++){
+
+      if(grid[i][j] == 2){
+      ocorre2++;
+      }
+      else if (grid[i][j] == 3){
+        ocorre3++;
+      }
+      else if (grid[i][j] == 5){
+        ocorre5++;
+      }
+      else if (grid[i][j] == 6){
+        ocorre6++;
+      }
+      else if (grid[i][j] == 7){
+        ocorre7++;
+      }
+      else if (grid[i][j] == 8){
+        ocorre8++;
+      }
+      else if (grid[i][j] == 9){
+        ocorre9++;
+      }
     }
-    return resultado;
+  }
+
+    int naoOcorre = ocorre6 + ocorre7 + ocorre8 + ocorre9; 
+
+    if (ocorre5 != 1 && ocorre2 < 1 && ocorre3 > ocorre2 && naoOcorre != 0 && grid == null){
+          resultado = false;
+        }
+      return resultado;
   }
 
   public static boolean positionInGrid(int[][] grid, int[] position){
@@ -317,21 +154,70 @@ public class Sokoban{
       lista[1] = -1;
     }
     else if (direction == 'U'){
-      lista[0] = -1;
+      lista[0] = 1;
       lista[1] = 0;
     }
     else if (direction == 'D'){
-      lista[0] = 1;
+      lista[0] = -1;
       lista[1] = 0;
     }
     return lista;
   }
 
 
+  public static int[] getPlayer(int[][] grid){
+    int[] posicao = new int[2];
+    for(int i = 0; i < grid.length; i++){
+      for(int j = 0; j < grid.length; j++){
+        if(grid[i][j] == 5){
+          posicao[0] = i;
+          posicao[1] = j;
+        }
+      }
+    }
+    return posicao;
+  }
 
 
+  public static boolean isAvailable(int[][] grid, int[] position){
+    boolean ocupado = false;
+    if(grid[position[0]][position[1]] != 3){
+      ocupado = true;
+    }
+    return ocupado;
+  }
+
+  public static boolean belongsTo(int[][] grid, int[][] goals, int[] position){
+      boolean resultado = true;
+      if (goals[0].length != position.length){
+          resultado = false;
+      }
+      else {
+          for (int i = 0; i < goals.length ; i++){
+            for (int j = 0; j < position.length; j++){
+                if (goals[i][j] != position[j]){
+                    resultado = false;
+                }
+            }
+          }
+      }
+      return resultado;
+  }
 
 
+  public static boolean ableToMove(int[][] grid, char direction){
+      boolean resultado = false;
+      int [] localDoPlayer = getPlayer(grid);
+      int[] direcao = delta(direction);
+      int localParaMoverHorizontal = localDoPlayer[0] + direcao[0]; 
+      int localParaMoverVertical = localDoPlayer[1] + direcao[1];
+      //int direcaoIndicada = grid[localParaMoverHorizontal][localParaMoverVertical];
+      
+      /*a) a posição adjacente à direita (resp., à esquerda, acima, abaixo) existe e não está ocupada, ou seja,
+      contém um número ímpar ou 
+      b) a posição adjacente à direita (resp., à esquerda, acima, abaixo) contém uma caixa (representado pelo dígito 2) mas a posição adjacente à da caixa, na mesma direção, existe e não está ocupada */
+      return resultado;
+}
 
 
 
