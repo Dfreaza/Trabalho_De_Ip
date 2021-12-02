@@ -10,6 +10,9 @@ public class Sokoban {
         Scanner sc = new Scanner(System.in);
         char r = readOption(sc);
         System.out.println(r);
+
+        int[][] matriz2 = {{4, 4 ,4, 1, 1, 1, 4, 1},{4, 3, 5, 2, 1, 1, 4, 1},{4, 4 ,4, 1, 2, 3, 4, 1}};
+        print(matriz2, matriz);
         
     }
 
@@ -33,38 +36,43 @@ public class Sokoban {
     int ocorre8 = 0;
     int ocorre9 = 0;
 
-    for (int i = 0; i < grid.length; i++){
-      for(int j = 0; j < grid.length; i++){
+    if (grid != null && grid.length > 2 && grid[0].length > 2){ 
+        for (int i = 0; i < grid.length; i++){
+        for(int j = 0; j < grid.length; i++){
 
-      if(grid[i][j] == 2){
-      ocorre2++;
-      }
-      else if (grid[i][j] == 3){
-        ocorre3++;
-      }
-      else if (grid[i][j] == 5){
-        ocorre5++;
-      }
-      else if (grid[i][j] == 6){
-        ocorre6++;
-      }
-      else if (grid[i][j] == 7){
-        ocorre7++;
-      }
-      else if (grid[i][j] == 8){
-        ocorre8++;
-      }
-      else if (grid[i][j] == 9){
-        ocorre9++;
-      }
-    }
-  }
-
-    int naoOcorre = ocorre6 + ocorre7 + ocorre8 + ocorre9; 
-
-    if (ocorre5 != 1 && ocorre2 < 1 && ocorre3 > ocorre2 && naoOcorre != 0 && grid == null){
-          resultado = false;
+            if(grid[i][j] == 2){
+            ocorre2++;
+            }
+            else if (grid[i][j] == 3){
+                ocorre3++;
+            }
+            else if (grid[i][j] == 5){
+                ocorre5++;
+            }
+            else if (grid[i][j] == 6){
+                ocorre6++;
+            }
+            else if (grid[i][j] == 7){
+                ocorre7++;
+            }
+            else if (grid[i][j] == 8){
+                ocorre8++;
+            }
+            else if (grid[i][j] == 9){
+                ocorre9++;
+            }
+          }
         }
+        
+        int naoOcorre = ocorre6 + ocorre7 + ocorre8 + ocorre9; 
+
+        if (ocorre5 != 1 && ocorre2 < 1 && ocorre3 > ocorre2 && naoOcorre != 0){
+            resultado = false;
+            }
+    }
+    else{
+        resultado = false;
+    }
       return resultado;
   }
 
@@ -207,11 +215,11 @@ public class Sokoban {
 
   public static boolean ableToMove(int[][] grid, char direction){
       boolean resultado = false;
-      int [] localDoPlayer = getPlayer(grid);
+      /*int [] localDoPlayer = getPlayer(grid);
       int[] direcao = delta(direction);
       int localParaMoverHorizontal = localDoPlayer[0] + direcao[0]; 
       int localParaMoverVertical = localDoPlayer[1] + direcao[1];
-      //int direcaoIndicada = grid[localParaMoverHorizontal][localParaMoverVertical];
+      int direcaoIndicada = grid[localParaMoverHorizontal][localParaMoverVertical];*/
       
       /*a) a posição adjacente à direita (resp., à esquerda, acima, abaixo) existe e não está ocupada, ou seja,
       contém um número ímpar ou 
@@ -219,9 +227,34 @@ public class Sokoban {
       return resultado;
 }
 
+    public static void move(int[][] grid, int[][] goals, char direction){
+
+    }
 
 
 
+        /**
+     * Imprime os elementos de um vetor de inteiros separados por espacos De
+     * interesse apenas pedagogico. Para imprimir vetor qq devem usar
+     * System.out.println(Arrays.toString(v))
+     *
+     * @param v O vetor a imprimir
+     * @requires {@code v != null}
+     */
+    public static void printArray(int[] v) {
+        for (int i = 0; i < v.length; i++)
+            System.out.print(v[i] + " ");
+        System.out.println();
+    }
+
+
+    public static void print(int[][] grid, int[][] goals){
+        for (int i = 0; i < grid.length; i++){
+            printArray(grid[i]);
+
+            }
+        }
+    
 
 
 }
