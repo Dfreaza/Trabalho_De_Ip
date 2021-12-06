@@ -3,14 +3,42 @@ import java.util.Scanner;
 public class Sokoban {
     public static void main(String[] args) {
 
+      Scanner scan = new Scanner(System.in);
+
       System.out.println("Welcome to Sokoban!");
       System.out.println("Consider that Sokoban symbols are represented by the following digits:");
       System.out.println(" "+"1 - blank  "+"2 - box  "+"3 - goal  "+"4 - wall  "+"5 - player  ");
       System.out.println("The symbolic representation on the right may help you while playing.");
+      
+
+        int[][] matriz ={{1,1},
+                         {2,5},
+                         {3,1},
+                         {4,4},
+                         {5,6},
+                         {6,4},
+                         {5,3}};
+
+        int[][] matriz2 = {{4, 4 ,4, 1, 1, 1, 4, 1},{4, 3, 5, 2, 1, 1, 4, 1},{4, 4 ,4, 1, 2, 3, 4, 1},
+                           {4, 3, 4, 4, 2, 1, 4, 1},{4, 1, 4, 1, 3, 1, 4, 4},{4, 2, 1, 2, 2, 2, 3, 4},
+                           {4, 1, 1, 1, 3, 1, 1, 4}, {4, 4, 4, 4, 4, 4, 4, 4}};
+        char opcaoEscolhida;
+        do{
+          print(matriz2, matriz);
+          System.out.println("Select one of the following options: (R)ight, (L)eft, (U)p, (D)own, (E)xit");
+          opcaoEscolhida = readOption(scan);
+        }while(opcaoEscolhida != 'E');
+          System.out.println("Thank you for playing Sokoban!");
+
+      }
 
 
 
-        int[][] matriz = new int[3][3];
+
+
+
+
+
         //int[] lista = null;
        //boolean resultado = positionInGrid(matriz, lista);
         //System.out.println(resultado);
@@ -19,17 +47,14 @@ public class Sokoban {
         //char r = readOption(sc);
         //System.out.println(r);
 
-       int[][] matriz2 = {{4, 4 ,4, 1, 1, 1, 4, 1},{4, 3, 5, 2, 1, 1, 4, 1},{4, 4 ,4, 1, 2, 3, 4, 1},
-                          {4, 3, 4, 4, 2, 1, 4, 1},{4, 1, 4, 1, 3, 1, 4, 4},{4, 2, 1, 2, 2, 2, 3, 4},
-                          {4, 1, 1, 1, 3, 1, 1, 4}, {4, 4, 4, 4, 4, 4, 4, 4}};
-       print(matriz2, matriz);
+    
 
        //int [][] matrizTeste = {{4, 3, 5, 2, 1, 1, 4, 1},{4, 4 ,4, 1, 1, 1, 4, 1},{4, 4 ,4, 1, 1, 1, 4, 1}};
        //int[][] matriz3 = null;
        //System.out.println(isValidGrid(matriz3));
        //System.out.println(ableToMove(matrizTeste, 'D'));
         
-    }
+    
 
 
   /*
@@ -139,7 +164,7 @@ public class Sokoban {
 
   public static boolean isValidDirection(char direction){
     boolean resultado = false;
-    if (direction == 'R' || direction == 'L' || direction == 'U' || direction == 'D'){
+    if (direction == 'R' || direction == 'L' || direction == 'U' || direction == 'D' || direction == 'E'){
       resultado = true;
     }
     
@@ -157,7 +182,8 @@ public class Sokoban {
           System.out.println("not valid");
         }
       }while (!valido);
-      
+
+
       return readOption;  
     }
 
@@ -248,8 +274,46 @@ public class Sokoban {
 
     public static void move(int[][] grid, int[][] goals, char direction){
       if (ableToMove(grid, direction)){
-          getPlayer(grid);
+          int[] localDoPlayer = getPlayer(grid);
+
+          int[] direcao = delta(direction);
+    
+          int localParaMoverHorizontal = localDoPlayer[1] + direcao[1];
+          int localParaMoverVertical = localDoPlayer[0] + direcao[0];
+          
+          if (grid[localParaMoverVertical][localParaMoverHorizontal] == 1){
+            grid[localParaMoverVertical][localParaMoverHorizontal] = 5;
+            if (belongsTo(grid, goals, localDoPlayer)){
+              grid[localDoPlayer[0]][localDoPlayer[1]] = 3;
+            }
+            else{
+              grid[localDoPlayer[0]][localDoPlayer[1]] = 1;
+            }
+            
+          }
+          else if (grid[localParaMoverVertical][localParaMoverHorizontal] == 2){
+            grid[localParaMoverVertical][localParaMoverHorizontal] = 5;
+            if (belongsTo(grid, goals, localDoPlayer)){
+              grid[localDoPlayer[0]][localDoPlayer[1]] = 3;
+            }
+            else{
+              grid[localDoPlayer[0]][localDoPlayer[1]] = 1;
+              grid[localParaMoverVertical + direcao[0]][localParaMoverHorizontal + direcao[1]] = 2;
+            }
+            
+          }
+          else if (grid[localParaMoverVertical][localParaMoverHorizontal] == 3){
+            grid[localParaMoverVertical][localParaMoverHorizontal] = 5;
+            if (belongsTo(grid, goals, localDoPlayer)){
+              grid[localDoPlayer[0]][localDoPlayer[1]] = 3;
+            }
+            else{
+              grid[localDoPlayer[0]][localDoPlayer[1]] = 1;
+            }
+
+          }
       }
+      print(grid, goals);
     }
 
 
@@ -275,7 +339,6 @@ public class Sokoban {
           }
         System.out.println();
             }
-        System.out.println("Select one of the following options: (R)ight, (L)eft, (U)p, (D)own, (E)xit");
       }
     
 
