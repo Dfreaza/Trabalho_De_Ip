@@ -51,8 +51,7 @@ public class Sokoban {
   *Verifica se a matriz não é nula, quadrada e que tem a ocorrência do número 5 (exatamente uma ocorrencia),
   *ocorrencia do número 2 (pelo menos uma vez), e a ocorrencia do número 3 (não podendo utrapassar a ocorrencia do numero 2).
   *
-  *@param grid Uma matriz com o mapa do jogo (int[][] grid)
-  *@requires //acho que nao há !!!!!!!!
+  *@param grid Uma matriz dada com o mapa do jogo 
   *@ensures {@code /result == true || /result == false}
   *@return Retorna um boleano depois de verificar a condição de grid
   */
@@ -108,14 +107,13 @@ public class Sokoban {
   
 
     /** 
-  *Verifica se a matriz não é nula, quadrada e que tem a ocorrência do número 5 (exatamente uma ocorrẽncia),
-  *ocorrência do número 2 (pelo menos uma vez), e a ocorrência do número 3 (não podendo utrapassar a ocorrência do numeor 2).
+  *Verifica se a posicao position é uma posicao valida na matriz grid
   *
-  *@param grid Uma matriz com o mapa do jogo (int[][] grid)
-  *@param position Um vetor (int[] position)
+  *@param grid Uma matriz dada com o mapa do jogo 
+  *@param position Um vetor dado com uma posicao do jogo
   *@requires {@code isValidGrid(grid)}
   *@ensures {@code /result == true || /result == false}
-  *@return Retorna um boleano depois de verificar a condição de position //nao sei se esta bem !!!!!!!
+  *@return Retorna um boleano depois de verificar se a posicao position esta em grid
   */
   public static boolean positionInGrid(int[][] grid, int[] position){
     boolean resultado = false;
@@ -133,11 +131,10 @@ public class Sokoban {
 
 
     /** 
-  *Verifica se a matriz não é nula, quadrada e que tem a ocorrência do número 5 (exatamente uma ocorrẽncia),
-  *ocorrência do número 2 (pelo menos uma vez), e a ocorrência do número 3 (não podendo utrapassar a ocorrência do numeor 2).
+  *Verifica se as posicoes objetivo estao assinaladas na grid
   *
-  *@param grid Uma matriz com o mapa do jogo(int[][] grid)
-  *@param goals Uma matriz com as posicoes de goals (int[][] goals)
+  *@param grid Uma matriz dada com o mapa do jogo 
+  *@param goals Uma matriz dada com as posicoes de goals 
   *@requires {@code isValidGrid(grid)}
   *@ensures {@code /result == true || /result == false}
   *@return Retorna um boleano depois de verificar as condicoes de goals
@@ -178,13 +175,12 @@ public class Sokoban {
 
 
     /** 
-  *Verifica se a matriz não é nula, quadrada e que tem a ocorrência do número 5 (exatamente uma ocorrẽncia),
-  *ocorrência do número 2 (pelo menos uma vez), e a ocorrência do número 3 (não podendo utrapassar a ocorrência do numeor 2).
+  *Verifica se o char direction e uma direcao de movimento valida
   *
   *@param direction um char com a direcao que o personagem move 
-  *@requires {@code } falta !!!!!!!!!!!!!!!!!!!!! 
+  *@requires {@code Type(direction == char)}  
   *@ensures {@code /result == true || /result == false}
-  *@return Retorna um boleano depois de verificar a condição de direction 
+  *@return Retorna um boleano depois de verificar a condição do char direction 
   */
   public static boolean isValidDirection(char direction){
     boolean resultado = false;
@@ -197,13 +193,12 @@ public class Sokoban {
 
 
     /**
-  *Verifica se a matriz não é nula, quadrada e que tem a ocorrência do número 5 (exatamente uma ocorrẽncia),
-  *ocorrência do número 2 (pelo menos uma vez), e a ocorrência do número 3 (não podendo utrapassar a ocorrência do numeor 2).
+  *Recebe um char escrito pelo usuario, se o que for escrito nao for uma opcao valida manda uma mensagem de erro e o char outra vez 
   *
   *@param sc Um Scanner com o input do usuário 
   *@requires {@code sc != null} 
-  *@ensures {@code }
-  *@return Retorna um boleano depois de verificar a condição da matriz
+  *@ensures retorna um caracter valido
+  *@return Retorna um caracter (depois de verificar se é valido)
   */
   public static char readOption(Scanner sc){
 
@@ -222,13 +217,13 @@ public class Sokoban {
 
 
   
-    /*
-  *Verifica se a matriz não é nula, quadrada e que tem a ocorrência do número 5 (exatamente uma ocorrẽncia),
-  *ocorrência do número 2 (pelo menos uma vez), e a ocorrência do número 3 (não podendo utrapassar a ocorrência do numeor 2).
+    /** 
+  *Devolve um vetor com o deslocamento com duas posicoes: A primeira para as linha a segunda para as colunas
   *
-  *@param Uma matriz (int[][] grid)
-  *@ensures
-  *@return Retorna um boleano depois de verificar a condição da matriz
+  *@param direction Um caracter dado pelo usuario
+  *@requires {@code isValidDirection(direction)}
+  *@ensures {@code \result.length==2 && \result[0]*\result[1]==0 && -1≤\result[i]≤1}
+  *@return Retorna um vetor com o deslocamento do char direction
   */
   public static int[] delta(char direction){
     int[] lista = new int[2];
@@ -252,6 +247,14 @@ public class Sokoban {
   }
 
 
+  /** 
+  *Procura pela posicao do jogador (digito 5) na grid e devolve num vetor
+  *
+  *@param grid Uma matriz dada com o mapa do jogo 
+  *@requires {@code isValidDirection(direction)}
+  *@ensures {@code positionInGrid(grid,\result)}
+  *@return Retorna um vetor com a posiçao do jogador
+  */
   public static int[] getPlayer(int[][] grid){
     int[] posicao = new int[2];
     for(int i = 0; i < grid.length; i++){
@@ -268,13 +271,14 @@ public class Sokoban {
 
 
 
-    /*
-  *Verifica se a matriz não é nula, quadrada e que tem a ocorrência do número 5 (exatamente uma ocorrẽncia),
-  *ocorrência do número 2 (pelo menos uma vez), e a ocorrência do número 3 (não podendo utrapassar a ocorrência do numeor 2).
+    /** 
+  *Verifica se a posição de position não está ocupada na grid
   *
-  *@param Uma matriz (int[][] grid)
-  *@ensures
-  *@return Retorna um boleano depois de verificar a condição da matriz
+  *@param grid Uma matriz dada com o mapa do jogo 
+  *@param position Um vetor dado com uma posicao do jogo  
+  *@requires {@code isValidGrid(grid) && positionInGrid(grid, position)}
+  *@ensures {@code /result == true || /result == false}
+  *@return Retorna um boleano depois de verificar se position nao esta ocupada 
   */
   public static boolean isAvailable(int[][] grid, int[] position){
     boolean ocupado = false;
@@ -286,12 +290,14 @@ public class Sokoban {
 
 
 
-    /*
-  *Verifica se a matriz não é nula, quadrada e que tem a ocorrência do número 5 (exatamente uma ocorrẽncia),
-  *ocorrência do número 2 (pelo menos uma vez), e a ocorrência do número 3 (não podendo utrapassar a ocorrência do numeor 2).
+    /** 
+  *Verifica se a posicao da em position corresponde a uma posicao objetivo na matriz goals 
   *
-  *@param Uma matriz (int[][] grid)
-  *@ensures
+  *@param grid Uma matriz dada com o mapa do jogo 
+  *@param goals Uma matriz dada com as posicoes de goals 
+  *@param position Um vetor dado com uma posicao do jogo 
+  *@requires {@code isValidGrid(grid) && positionInGrid(grid, position) &&  goalsInGrid(grid,goals)}
+  *@ensures {@code /result == true || /result == false}
   *@return Retorna um boleano depois de verificar a condição da matriz
   */
   public static boolean belongsTo(int[][] grid, int[][] goals, int[] position){
@@ -306,13 +312,14 @@ public class Sokoban {
     }
 
 
-    /*
-  *Verifica se a matriz não é nula, quadrada e que tem a ocorrência do número 5 (exatamente uma ocorrẽncia),
-  *ocorrência do número 2 (pelo menos uma vez), e a ocorrência do número 3 (não podendo utrapassar a ocorrência do numeor 2).
+    /** 
+  *Verifica se o joador se pode deslocar para a posicao da por char direction
   *
-  *@param Uma matriz (int[][] grid)
-  *@ensures
-  *@return Retorna um boleano depois de verificar a condição da matriz
+  *@param grid Uma matriz dada com o mapa do jogo 
+  *@param direction Um caracter dado pelo usuario
+  *@requires {@code isValidGrid(grid) && isValidDirection(direction)} 
+  *@ensures {@code /result == true || /result == false}
+  *@return Retorna o resultado com o valor correto da variavel booleana
   */
   public static boolean ableToMove(int[][] grid, char direction){
     boolean resultado = false;
@@ -342,13 +349,14 @@ public class Sokoban {
 
     return resultado;
   }
-        /*
-  *Verifica se a matriz não é nula, quadrada e que tem a ocorrência do número 5 (exatamente uma ocorrẽncia),
-  *ocorrência do número 2 (pelo menos uma vez), e a ocorrência do número 3 (não podendo utrapassar a ocorrência do numeor 2).
+  
+  /** 
+  *Verifica se o jogador pode se deslocar na direcao dada no caso de conseguir mover atualiza a grid deslocando o jogador na posicao dado por direction
   *
-  *@param Uma matriz (int[][] grid)
-  *@ensures
-  *@return Retorna um boleano depois de verificar a condição da matriz
+  *@param grid Uma matriz dada com o mapa do jogo 
+  *@param goals Uma matriz dada com as posicoes de goals
+  *@requires {@code isValidGrid(grid) && isValidDirection(direction) && goalsInGrid(grid,goals)} 
+  *@return none
   */
   public static void move(int[][] grid, int[][] goals, char direction){
     if (ableToMove(grid, direction)){
@@ -371,20 +379,18 @@ public class Sokoban {
           } else{
               grid[localDoPlayer[0]][localDoPlayer[1]] = 1;
           }
-
-
-
         }
     }
 
 
-    /*
-  *Verifica se a matriz não é nula, quadrada e que tem a ocorrência do número 5 (exatamente uma ocorrẽncia),
-  *ocorrência do número 2 (pelo menos uma vez), e a ocorrência do número 3 (não podendo utrapassar a ocorrência do numeor 2).
+  /**
+  *Imprime a grid dada com valores numerios e ao mesmo tempo imprime a matriz com simbolos escolhidos
   *
-  *@param Uma matriz (int[][] grid)
-  *@ensures
-  *@return Retorna um boleano depois de verificar a condição da matriz
+  *@param grid Uma matriz dada com o mapa do jogo 
+  *@param goals Uma matriz dada com as posicoes de goals
+  *@requires {@code isValidGrid(grid) && goaslInGrid(grid,goals)}
+  *@ensures faz o print da matriz
+  *@return none
   */
   public static void print(int[][] grid, int[][] goals){
       for (int i = 0; i < grid.length; i++){
