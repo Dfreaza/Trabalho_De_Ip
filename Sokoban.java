@@ -313,7 +313,7 @@ public class Sokoban {
 
 
     /** 
-  *Verifica se o joador se pode deslocar para a posicao da por char direction
+  *Verifica se o jogador se pode deslocar para a posicao da por char direction
   *
   *@param grid Uma matriz dada com o mapa do jogo 
   *@param direction Um caracter dado pelo usuario
