@@ -67,7 +67,7 @@ public class Sokoban {
 
     if (grid != null && grid.length > 2 && grid[0].length > 2){
         for (int i = 0; i < grid.length; i++){
-        for(int j = 0; j < grid.length; i++){
+        for(int j = 0; j < grid.length; j++){
 
             if(grid[i][j] == 2){
             ocorre2++;
