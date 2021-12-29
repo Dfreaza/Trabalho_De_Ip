@@ -4,9 +4,13 @@ public class SokobanGame {
     private String ultimoMov;
     private int level;
     private int numMoves;
+    private int[] playerPos;
+    private int[][] boxes;
 
     public SokobanGame(){
         level = 1;
+        playerPos = SokobanMapGenerator.getPlayer(level);
+        boxes = SokobanMapGenerator.getBoxes(level);
         map = new SokobanMap(SokobanMapGenerator.getNrRows(level),
                               SokobanMapGenerator.getNrColumns(level), 
                               SokobanMapGenerator.getOccupiableMap(level), 
@@ -27,7 +31,7 @@ public class SokobanGame {
 
     public int[] getPlayerPosition(){
         
-        return map.getInitialPlayerPosition();
+        return playerPos;
     }
 
     public Direction getDirection(){
@@ -59,7 +63,7 @@ public class SokobanGame {
 
     public int[][] getPositionBoxes(){
         
-        return map.getInitialPositionBoxes();
+        return boxes;
     }
 
     public int[][] getPositionGoals(){
@@ -72,7 +76,7 @@ public class SokobanGame {
         return map.isOccupiable(i, j);
     }
 
-    public void move(Direction dir){
+    public void move(Direction dir){                        // falta este !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         
         numMoves++;
         ultimoMov = dir.name();
@@ -100,29 +104,86 @@ public class SokobanGame {
     }
 
     public boolean isTerminated(){
-       
-        return false;
+       boolean jogoAcabou = false;
+       if(levelCompleted() && SokobanMapGenerator.numberOfLevels() == level){
+           jogoAcabou = true;
+       }
+       return jogoAcabou;
     }
 
     public void loadNextLevel(){
-        if (!isTerminated() && levelCompleted()){
             level += 1;
+            playerPos = SokobanMapGenerator.getPlayer(level);
+            boxes = SokobanMapGenerator.getBoxes(level);
             map = new SokobanMap(SokobanMapGenerator.getNrRows(level),
                                  SokobanMapGenerator.getNrColumns(level), 
                                  SokobanMapGenerator.getOccupiableMap(level), 
                                  SokobanMapGenerator.getGoals(level), 
                                  SokobanMapGenerator.getBoxes(level), 
                                  SokobanMapGenerator.getPlayer(level));
-        }
+        
     }
 
     public void restartLevel(){
-
+        this.map = new SokobanMap(SokobanMapGenerator.getNrRows(level),
+                             SokobanMapGenerator.getNrColumns(level), 
+                             SokobanMapGenerator.getOccupiableMap(level), 
+                             SokobanMapGenerator.getGoals(level), 
+                             SokobanMapGenerator.getBoxes(level), 
+                             SokobanMapGenerator.getPlayer(level));
     }
 
     public String toString(){
+        int linhas = map.getRows();
+        int colunas = map.getColumns();
+        boolean[][] occupiableMap = SokobanMapGenerator.getOccupiableMap(level); 
+        int[][] goals = SokobanMapGenerator.getGoals(level);
         
-        return null;
+
+        String mapa = "+";
+        for(int x = 0; x < linhas*2; x++){
+            mapa += "-";
+        }
+        mapa += "+";
+        mapa += "\nLEVEL: " + this.level;
+        mapa += "\n+------ MAP ------+";
+
+        for(int i = 0; i < linhas; i++){
+            mapa += "\n|";
+            for(int j = 0; j < colunas; j++){
+                if (occupiableMap[i][j] == false) {
+                mapa += "-";
+                }
+                else if (playerPos[0] == i && playerPos[1] == j) {
+                mapa += "P";
+                }
+                else{
+                for (int x = 0; x < goals.length; x++){
+                    if (boxes[x][0] == i && boxes[x][1] == j && goals[x][0] == i && goals[x][1] == j) {
+                    mapa += "*";
+                    }
+                    else if (boxes[x][0] == i && boxes[x][1] == j){
+                        mapa += "B";
+                    }
+                    else if (goals[x][0] == i && goals[x][1] == j){
+                    mapa += "G";
+                    }
+                    else{
+                    mapa += " ";
+                    }
+                }
+            }
+        }
+      mapa += "|";
     }
+    mapa += "\n";
+
+    mapa = "+-----------------+";
+    mapa += "MOVES: " + this.numMoves;
+    mapa = "+-----------------+";
+
+    return mapa;
+   }
 
 }
+
