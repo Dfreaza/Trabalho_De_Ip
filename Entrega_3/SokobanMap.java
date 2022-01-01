@@ -11,82 +11,65 @@ public class SokobanMap {
 
     public static boolean isValidMap(int rows, int columns, boolean[][] occupiableMap,
                                     int[][] goals, int[][] boxes, int[] playerPos){
-        int goalsEquals = 0;
-        int boxesEquals = 0;
-        boolean eMatriz = true;
+
+        boolean isValid = false;
+        boolean condition = true;
         boolean goalsIsValid = false;
-        boolean boxesIsValid = false;
-        boolean isValid = true;
+        boolean boxesIsValid = true;
+        boolean positionIsValid = false;
+
+        int playerPosX = playerPos[0];
+        int playerPosY = playerPos[1];
 
         if(rows > 2 && columns > 2){
-            if(occupiableMap != null){
-                for(int x = 0; x < occupiableMap.length; x++){
-                    if (occupiableMap.length != occupiableMap[x].length){
-                        eMatriz = false;
-                    }
-                }
-                if(goals != null && goals.length > 0 && eMatriz){
-                    for(int i = 0; i < goals.length; i++){
-                        if(goals[i] != null && (goals[i].length == 2) && (0 <= goals[i][0] &&
-                           goals[i][0] < rows) && (0 <= goals[i][1] && goals[i][1] < columns)){
-                                for(int j = 0; j < goals.length; j++){
-                                    if(goals[i][0] == goals[j][0] && goals[i][1] == goals[j][1] && i != j){
-                                        goalsEquals++;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-
-        if(goalsEquals == 0){
-           goalsIsValid = true;
-        }
-        
-        if(boxes != null && boxes.length > 0){
-            for(int i = 0; i < boxes.length; i++){
-                if(boxes[i] != null && (boxes[i].length == 2) 
-                    && (0 <= boxes[i][0] && boxes[i][0] < rows) 
-                    && (0 <= boxes[i][1] && boxes[i][1] < columns)){
-                    for(int x = 0; x < boxes.length; x++){
-                        for(int y = 0; y < boxes.length; y++){
-                            if(boxes[x][0] == boxes[y][0] && boxes[x][1] == boxes[y][1] && x != y){
-                                boxesEquals++;
-                            }
+            if(occupiableMap != null && occupiableMap.length == rows){
+                if(goals.length == boxes.length && goals != null && goals.length > 0){
+                    goalsIsValid = true;
+                    for(int i = 0; i < occupiableMap.length; i++){
+                        if(occupiableMap[i].length != columns){
+                            condition = false;
                         }
                     }
                 }
             }
         }
 
-        if(boxesEquals == 0){
-            boxesIsValid = true;
+        for(int i = 0; i < goals.length && goalsIsValid; i++){
+            goalsIsValid &= goals[i] != null && goals[i].length == 2;
+            goalsIsValid &= goals[i][0] >= 0 && goals[i][0] < rows;
+            goalsIsValid &= goals[i][1] >= goals[i][1] && goals[i][1] < columns;
+            goalsIsValid &= occupiableMap[goals[i][0]][goals[i][1]];
         }
-        
-        if(goals.length == boxes.length && goalsIsValid && boxesIsValid){ 
-            for(int i = 0; i < goals.length; i++){
-                int linhaGoals = goals[i][0];
-                int colunaGoals = goals[i][1];
-                int linhaBoxes = boxes[i][0];
-                int colunaBoxes = boxes[i][1]; 
-                int linhaPlayer = playerPos[0];
-                int colunaPlayer = playerPos[1];
-                if(!occupiableMap[linhaGoals][colunaGoals] || !occupiableMap[linhaBoxes][colunaBoxes] || 
-                   !occupiableMap[linhaPlayer][colunaPlayer] || 
-                   (linhaPlayer == linhaBoxes && colunaPlayer == colunaBoxes)){
-                            isValid = false;   
-                }
 
+        for(int i = 0; i < goals.length && boxesIsValid; i++){
+            boxesIsValid &= boxes[i] != null && boxes[i].length == 2;
+            boxesIsValid &= boxes[i][0] >= 0 && boxes[i][0] < rows;
+            boxesIsValid &= boxes[i][1] >= boxes[i][1] && boxes[i][1] < columns;
+            boxesIsValid &= occupiableMap[boxes[i][0]][boxes[i][1]];
+        }
+                
+        for(int i = 0; i < goals.length && goalsIsValid && boxesIsValid; i++){
+            for(int j = 0; j < goals.length && goalsIsValid && boxesIsValid; j++){
+                if(i != j){
+                    if(goals[i][0] == goals[j][0] && goals[i][1] == goals[j][1]){
+                        goalsIsValid = false;
+                    }
+                    if(boxes[i][0] == boxes[j][0] && boxes[i][1] == boxes[j][1]){
+                        boxesIsValid = false;
+                    }
+                }
             }
         }
-        else{
-            isValid = false;
+
+        if(playerPosX >= 0 && playerPosX < rows && playerPosY >= 0 && playerPosY < columns && occupiableMap[playerPosX][playerPosY]){
+            positionIsValid = true;
         }
-        
-    return isValid;
-  }
+
+        if(positionIsValid && goalsIsValid && boxesIsValid && condition){
+            isValid = true;
+        }
+        return isValid;
+    }
 
   public SokobanMap(int rows, int columns, boolean[][] occupiableMap, int[][] goals,
   int[][] boxes, int[] playerPos){
@@ -112,16 +95,33 @@ public class SokobanMap {
   }
  
   public int[] getInitialPlayerPosition(){
-    return this.initialPlayerPosition;
+    int[] player = new int[this.initialPlayerPosition.length];
+    for (int i = 0; i < player.length; i++) {
+      player[i] = this.initialPlayerPosition[i];
+    }
+    return player;
   }
 
   public int[][] getInitialPositionBoxes(){
-    return this.initialPositionBoxes;
+    int[][] boxes = new int[this.initialPositionBoxes.length][this.initialPositionBoxes[0].length];
+    for (int i = 0; i < boxes.length; i++) {
+      for (int j = 0; j < boxes[i].length; j++){
+        boxes[i][j] = initialPositionBoxes[i][j];
+      }
+    }
+    return boxes;
   }
 
   public int[][] getInitialPositionGoals(){
-    return this.initialPositionGoals;
+    int[][] goals = new int[this.initialPositionGoals.length][this.initialPositionGoals[0].length];
+    for (int i = 0; i < goals.length; i++) {
+      for (int j = 0; j < goals[i].length; j++){
+        goals[i][j] = initialPositionGoals[i][j];
+      }
+    }
+    return goals;
   }
+  
 
   public boolean isOccupiable(int i, int j){
     boolean resultado = occupiableMap[i][j];
