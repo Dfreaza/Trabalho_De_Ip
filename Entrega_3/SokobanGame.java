@@ -331,35 +331,6 @@ public class SokobanGame {
     return mapa;
    }
 
-   public static void main(String[] args) {
-    
-    SokobanGame game = new SokobanGame();
-
-    game.loadNextLevel();
-
-    game.loadNextLevel();
-
-    game.loadNextLevel();
-
-    System.out.println(game.toString());
-    game.move(Direction.UP);
-    System.out.println(game.toString());
-    game.move(Direction.DOWN);
-    System.out.println(game.toString());
-    game.move(Direction.LEFT);
-    System.out.println(game.toString());
-    game.move(Direction.RIGHT);
-    System.out.println(game.toString());
-    game.move(Direction.RIGHT);
-    System.out.println(game.toString());
-    game.move(Direction.RIGHT);
-    System.out.println(game.toString());
-    game.move(Direction.RIGHT);
-    System.out.println(game.toString());
-    game.move(Direction.DOWN);
-    System.out.println(game.toString());
-
-   }
 }
 
 
