@@ -1,4 +1,11 @@
 import javax.xml.bind.JAXBElement.GlobalScope;
+
+/**
+ *@author Diogo Freaza - fc56969
+ *@author Guilherme Wind - fc58640
+ */
+
+import javax.xml.bind.JAXBElement.GlobalScope;
 import java.util.Arrays;
 
 public class SokobanGame {
@@ -15,7 +22,9 @@ public class SokobanGame {
     private int[][] boxes;
 
 
-
+    /**
+     * Cria o jogo Sokoban no nivel 1 
+     */
     public SokobanGame(){
         level = 1;
         numMoves = 0;
@@ -28,21 +37,43 @@ public class SokobanGame {
         map = new SokobanMap(numRows,numColumns, occupiable, goals, boxes,playerPos);
     }
 
+    /**
+     *Verifica o número de linhas do mapa
+     * 
+     * @return Retorna o número de linhas
+     */
     public int getRows(){
        
         return numRows;
     }
 
+    /**
+     * Verifica o número de colunas do mapa
+     * 
+     * @return Retorna o número de colunas
+     */
     public int getColumns(){
         
         return numColumns;
     }
 
+    /**
+     * Verifica a posição do player
+     * 
+     * @return Retorna um vetor com a posição do player
+     */
     public int[] getPlayerPosition(){
         
         return playerPos;
     }
 
+    /**
+     * obtem a direção dada pelo jogaddor
+     * 
+     * @ensures devolve sempre um valor (DOWN, UP, RIGHT, LEFT) 
+     * 
+     * @return Retorna a direção dada e o seu respectivo valor 
+     */
     public Direction getDirection(){
         Direction resultado = null;
         if (ultimoMov == "DOWN" || ultimoMov == null){
@@ -60,32 +91,71 @@ public class SokobanGame {
         return resultado;
     }
 
+    /**
+     * Verifica em que level o player se encontra
+     * 
+     * @return Retorna o level do player
+     */
     public int getLevel(){
         
         return level; 
     }
 
+    /**
+     * Observa o número de movimentos dados pelo player
+     * 
+     * @return Retorna o número de movimentos
+     */
     public int getNrMoves(){
         
         return numMoves;
     }
 
+    /**
+     * Verifica as posições das caixas
+     * 
+     * @return Retorna uma matriz com as posições das caixas
+     */
     public int[][] getPositionBoxes(){
         
         return boxes;
     }
 
+    /**
+     * Verifica as posições dos objetivos
+     * 
+     * @return Retorna uma matiz com as posições dos obejtivos
+     */
     public int[][] getPositionGoals(){
         
         return goals;
     }
     
+    /**
+     * Verifica se as coordenadas dadas são ou não ocupaveis
+     * 
+     * @param i Número da linha
+     * @param j Número da coluna
+     * 
+     * @requires {@code 0≤i<getRows() e 0≤j<getColumns()}
+     * 
+     * @ensures {@code isValidMap(rows,columns,occupiableMap,goals,boxes,playerPos)}
+     * 
+     * @return Retorna um boleano com o respectivo valor lógico da posição
+     */
     public boolean isOccupiable(int i, int j){
        
         return occupiable[i][j];
     }
 
-    public void move(Direction dir){                        // falta este !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    /**
+     * Move o player segundo a direção dada pelo player
+     * 
+     * @param dir Direção dada pelo player
+     * 
+     * @requires {@code dir!=null && !levelCompleted()}
+     */
+    public void move(Direction dir){                        
         ultimoMov = dir.name(); 
         int[] direcao = new int[2];
         if (dir == Direction.RIGHT){
@@ -193,6 +263,12 @@ public class SokobanGame {
 
     }
 
+    /**
+     * Verifica se o level está concluido ou não ( todos os boxes nos goals)
+     *
+     * @ensures {@code /result == true || /result == false}
+     * @return Retorna um boleano com o valor lógico do level 
+     */
     public boolean levelCompleted(){
         boolean resultado = false;
         int numBoxes = 0;
@@ -214,6 +290,12 @@ public class SokobanGame {
         
     }
 
+    /**
+     * Verifica se o jogador atingiu o level máximo
+     * 
+     * @ensures {@code /result == true || /result == false}
+     * @return Retorna um boleano com o  respectivo valor lógico
+     */
     public boolean isTerminated(){
        boolean jogoAcabou = false;
        if(levelCompleted() && SokobanMapGenerator.numberOfLevels() == level){
@@ -222,6 +304,12 @@ public class SokobanGame {
        return jogoAcabou;
     }
 
+    /**
+     * Após atingir o objetivo, carrega o próximo level
+     * 
+     * @requires {@code !isTerminated() && levelCompleted()}
+
+     */
     public void loadNextLevel(){
             level += 1;
             ultimoMov = null;
@@ -235,8 +323,9 @@ public class SokobanGame {
             map = new SokobanMap(numRows,numColumns, occupiable, goals, boxes,playerPos);
     }
         
-    
-
+    /**
+     * Reinicia o level em que o player se encontra
+     */
     public void restartLevel(){
         numMoves = 0;
         ultimoMov = null;
@@ -249,6 +338,12 @@ public class SokobanGame {
         map = new SokobanMap(numRows,numColumns, occupiable, goals, boxes,playerPos);
     }
 
+    /**
+     * Constroi o mapa segundo as intruções dadas
+     * 
+     * @ensures devolve uma string
+     * @retrun Retorna uma string com o desenho do mapa
+     */
     public String toString(){
         int linhas = map.getRows();
         int colunas = map.getColumns();
