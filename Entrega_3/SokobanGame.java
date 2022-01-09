@@ -396,7 +396,9 @@ public class SokobanGame {
                             }
                             
                         }
-                        else if(boxes[x][0] == i && boxes[x][1] == j && !encontrouBoxGrid){
+                    }
+                    for (int j2 = 0; j2 < boxes.length; j2++) {
+                        if(boxes[j2][0] == i && boxes[j2][1] == j && !encontrouBoxGrid){
                             mapa += "B ";
                             encontrou = true;
                         }
@@ -425,6 +427,7 @@ public class SokobanGame {
 
     return mapa;
    }
+
 
 }
 
